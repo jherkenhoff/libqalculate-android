@@ -1,0 +1,23 @@
+--- libqalculate/util.cc	2021-12-03 14:29:16.233342931 +0100
++++ libqalculate/util.cc	2021-12-03 14:20:38.398482918 +0100
+@@ -954,8 +954,8 @@
+ }
+ 
+ void Thread::enableAsynchronousCancel() {
+-	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+-	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
++	//pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
++	//pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+ }
+ 
+ void *Thread::doRun(void *data) {
+@@ -978,7 +978,8 @@
+ 
+ bool Thread::cancel() {
+ 	if(!running) return true;
+-	running = pthread_cancel(m_thread) != 0;
++	//running = pthread_cancel(m_thread) != 0;
++	running = pthread_kill(m_thread, 0) != 0;
+ 	return !running;
+ }
+ 

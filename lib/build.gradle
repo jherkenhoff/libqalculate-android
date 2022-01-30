@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
 }
 
@@ -7,11 +7,13 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.mrkenhoff.libqalculate"
         minSdk 21
         targetSdk 31
         versionCode 1
         versionName "1.0"
+        ndk {
+            abiFilters "armeabi-v7a", "x86_64"
+        }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
