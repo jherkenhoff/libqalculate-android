@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.10.2)
 project("libqalculate")
 
 include(ExternalProject)
+find_package(SWIG REQUIRED COMPONENTS java)
+if(SWIG_FOUND)
+    message("SWIG found: ${SWIG_EXECUTABLE}")
+endif()
+include(UseSWIG)
 
 # C compiler wrapper
 set(C_COMPILER_WRAPPER ${CMAKE_CURRENT_BINARY_DIR}/c_compiler_wrapper)
@@ -123,7 +128,7 @@ set_target_properties(libiconv PROPERTIES
 ExternalProject_Add(xml2
         URL ftp://xmlsoft.org/libxml2/libxml2-2.9.12.tar.gz
         URL_HASH MD5=f433a39be087a9f0b197eb2307ad9f75
-        CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE}  --without-python --with-lzma=${XZ_INSTALL_DIR}
+        CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --without-python --with-lzma=${XZ_INSTALL_DIR}
         BUILD_COMMAND make
         INSTALL_COMMAND make install
         STEP_TARGETS install
@@ -165,22 +170,33 @@ set(QALCULATE_INSTALL_DIR ${INSTALL_DIR})
 
 add_library(libqalculate SHARED IMPORTED)
 add_dependencies(libqalculate qalculate-install)
+IF(NOT EXISTS "${QALCULATE_INSTALL_DIR}/lib/libqalculate.so")
 file(WRITE ${QALCULATE_INSTALL_DIR}/lib/libqalculate.so "")
+ENDIF()
 file(MAKE_DIRECTORY ${QALCULATE_INSTALL_DIR}/include)
 set_target_properties(libqalculate PROPERTIES
         IMPORTED_LOCATION "${QALCULATE_INSTALL_DIR}/lib/libqalculate.so"
         INTERFACE_INCLUDE_DIRECTORIES "${QALCULATE_INSTALL_DIR}/include")
 
 
-add_library(libqalculate-test
-        SHARED
-        native-lib.cpp)
 
-add_dependencies(libqalculate-test libgmp libmpfr liblzma libiconv libxml2 libqalculate)
 
-find_library(log-lib log)
 
-target_link_libraries(libqalculate-test
+list(APPEND CMAKE_SWIG_FLAGS -package com.mrkenhoff.libqalculate -I${QALCULATE_INSTALL_DIR}/include -I${GMP_INSTALL_DIR}/include -I${MPFR_INSTALL_DIR}/include -I${ICONV_INSTALL_DIR}/include)
 
-        ${log-lib}
-        libqalculate)
+set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/libqalculate.i PROPERTY INCLUDE_DIRECTORIES ${QALCULATE_INSTALL_DIR}/include ${GMP_INSTALL_DIR}/include)
+set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/libqalculate.i PROPERTY CPLUSPLUS ON)
+
+swig_add_library(libqalculate_swig
+        TYPE SHARED
+        LANGUAGE java
+        SOURCES ${CMAKE_CURRENT_LIST_DIR}/libqalculate.i
+        )
+
+swig_link_libraries(libqalculate_swig
+        libqalculate
+)
+
+add_dependencies(libqalculate_swig libqalculate)
+
+target_include_directories(libqalculate_swig PUBLIC ${QALCULATE_INSTALL_DIR}/include ${GMP_INSTALL_DIR}/include ${MPFR_INSTALL_DIR}/include)
