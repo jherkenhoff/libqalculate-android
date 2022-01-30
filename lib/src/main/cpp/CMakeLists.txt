@@ -148,7 +148,7 @@ set_target_properties(libxml2 PROPERTIES
 set(QALCULATE_CPPFLAGS "-I${GMP_INSTALL_DIR}/include -I${MPFR_INSTALL_DIR}/include -I${ICONV_INSTALL_DIR}/include")
 set(QALCULATE_LDFLAGS "-L${GMP_INSTALL_DIR}/lib -L${MPFR_INSTALL_DIR}/lib -L${ICONV_INSTALL_DIR}/lib")
 set(QALCULATE_LIBXML_CFLAGS "-I${XML2_INSTALL_DIR}/include/libxml2")
-set(QALCULATE_LIBXML_LIBS "-L${XML2_INSTALL_DIR}/lib")
+set(QALCULATE_LIBXML_LIBS "-L${XML2_INSTALL_DIR}/lib -lxml2")
 
 ExternalProject_Add(qalculate
         URL https://github.com/Qalculate/libqalculate/releases/download/v3.22.0/libqalculate-3.22.0.tar.gz
