@@ -182,7 +182,14 @@ set_target_properties(libqalculate PROPERTIES
 
 
 
-list(APPEND CMAKE_SWIG_FLAGS -package com.mrkenhoff.libqalculate -I${QALCULATE_INSTALL_DIR}/include -I${GMP_INSTALL_DIR}/include -I${MPFR_INSTALL_DIR}/include -I${ICONV_INSTALL_DIR}/include)
+set(JAVA_GEN_PACKAGE "com.mrkenhoff.libqalculate")
+string(REPLACE "." "/" JAVA_GEN_SUBDIR ${JAVA_GEN_PACKAGE})
+set(JAVA_GEN_DIR ${PROJECT_SOURCE_DIR}/src/main/java/${JAVA_GEN_SUBDIR})
+
+
+list(APPEND CMAKE_SWIG_FLAGS -package ${JAVA_GEN_PACKAGE} -I${QALCULATE_INSTALL_DIR}/include -I${GMP_INSTALL_DIR}/include -I${MPFR_INSTALL_DIR}/include -I${ICONV_INSTALL_DIR}/include)
+
+set(CMAKE_SWIG_OUTDIR ${JAVA_GEN_DIR})
 
 set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/libqalculate.i PROPERTY INCLUDE_DIRECTORIES ${QALCULATE_INSTALL_DIR}/include ${GMP_INSTALL_DIR}/include)
 set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/libqalculate.i PROPERTY CPLUSPLUS ON)
