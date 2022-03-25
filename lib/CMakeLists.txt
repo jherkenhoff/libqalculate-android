@@ -184,22 +184,19 @@ set_target_properties(libqalculate PROPERTIES
 ###############################################################################
 set(JAVA_GEN_PACKAGE "com.mrkenhoff.libqalculate")
 string(REPLACE "." "/" JAVA_GEN_SUBDIR ${JAVA_GEN_PACKAGE})
-set(JAVA_GEN_DIR ${PROJECT_SOURCE_DIR}/src/main/java/${JAVA_GEN_SUBDIR})
 list(APPEND CMAKE_SWIG_FLAGS -package ${JAVA_GEN_PACKAGE} -I${QALCULATE_INSTALL_DIR}/include -I${GMP_INSTALL_DIR}/include -I${MPFR_INSTALL_DIR}/include -I${ICONV_INSTALL_DIR}/include)
 
-set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/src/main/cpp/libqalculate.i PROPERTY INCLUDE_DIRECTORIES ${QALCULATE_INSTALL_DIR}/include ${GMP_INSTALL_DIR}/include)
+set(CMAKE_SWIG_OUTDIR ${PROJECT_SOURCE_DIR}/src/main/java/${JAVA_GEN_SUBDIR})
+set(SWIG_OUTFILE_DIR ${CMAKE_CURRENT_BINARY_DIR})
 set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/src/main/cpp/libqalculate.i PROPERTY CPLUSPLUS ON)
-set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/src/main/cpp/libqalculate.i PROPERTY COMPILE_OPTIONS -package ${JAVA_GEN_PACKAGE})
 
 swig_add_library(libqalculate_swig
         TYPE SHARED
         LANGUAGE java
-        OUTPUT_DIR ${JAVA_GEN_DIR}
         SOURCES ${CMAKE_CURRENT_LIST_DIR}/src/main/cpp/libqalculate.i
         )
 
 swig_link_libraries(libqalculate_swig libqalculate)
-
 add_dependencies(libqalculate_swig libqalculate)
 
 target_include_directories(libqalculate_swig PUBLIC ${QALCULATE_INSTALL_DIR}/include ${GMP_INSTALL_DIR}/include ${MPFR_INSTALL_DIR}/include)
