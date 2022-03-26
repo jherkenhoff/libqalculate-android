@@ -196,7 +196,5 @@ swig_add_library(libqalculate_swig
         SOURCES ${CMAKE_CURRENT_LIST_DIR}/src/main/cpp/libqalculate.i
         )
 
-swig_link_libraries(libqalculate_swig libqalculate)
+swig_link_libraries(libqalculate_swig libqalculate libgmp libmpfr libiconv libxml2 liblzma)
 add_dependencies(libqalculate_swig libqalculate)
-
-target_include_directories(libqalculate_swig PUBLIC ${QALCULATE_INSTALL_DIR}/include ${GMP_INSTALL_DIR}/include ${MPFR_INSTALL_DIR}/include)

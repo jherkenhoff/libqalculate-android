@@ -12,13 +12,14 @@ android {
         versionCode 1
         versionName "1.0"
         ndk {
-            abiFilters "armeabi-v7a", "x86_64"
+            abiFilters "x86"
         }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
                 cppFlags ''
+                arguments "-DANDROID_ARM_NEON=TRUE","-DANDROID_STL=c++_shared"
             }
         }
     }
