@@ -159,14 +159,21 @@ ExternalProject_Add(qalculate
         URL https://github.com/Qalculate/libqalculate/releases/download/v3.22.0/libqalculate-3.22.0.tar.gz
         URL_HASH MD5=447a0cd929b5bf855fb9463d56143b00
         PATCH_COMMAND patch <SOURCE_DIR>/libqalculate/util.cc < ${CMAKE_CURRENT_LIST_DIR}/src/main/cpp/liqalculate_util.patch
-        CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --without-icu --without-libcurl --without-libintl-prefix CPPFLAGS=${QALCULATE_CPPFLAGS} LDFLAGS=${QALCULATE_LDFLAGS} LIBXML_CFLAGS=${QALCULATE_LIBXML_CFLAGS} LIBXML_LIBS=${QALCULATE_LIBXML_LIBS}
+        CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --without-icu --without-libcurl --without-libintl-prefix --enable-compiled-definitions CPPFLAGS=${QALCULATE_CPPFLAGS} LDFLAGS=${QALCULATE_LDFLAGS} LIBXML_CFLAGS=${QALCULATE_LIBXML_CFLAGS} LIBXML_LIBS=${QALCULATE_LIBXML_LIBS}
         BUILD_COMMAND make
         INSTALL_COMMAND make install
         STEP_TARGETS install
         DEPENDS libgmp libmpfr libiconv libxml2
         )
+# Copy qalculate xml files to asset directory
+#ExternalProject_Add_Step(qalculate copy_assets
+#        COMMAND ${CMAKE_COMMAND} -E copy_directory <INSTALL_DIR>/share/qalculate ${PROJECT_SOURCE_DIR}/src/main/assets
+#        DEPENDS install
+#        ALWAYS true
+#        )
 ExternalProject_Get_property(qalculate INSTALL_DIR)
 set(QALCULATE_INSTALL_DIR ${INSTALL_DIR})
+
 
 add_library(libqalculate SHARED IMPORTED)
 add_dependencies(libqalculate qalculate-install)
@@ -177,7 +184,6 @@ file(MAKE_DIRECTORY ${QALCULATE_INSTALL_DIR}/include)
 set_target_properties(libqalculate PROPERTIES
         IMPORTED_LOCATION "${QALCULATE_INSTALL_DIR}/lib/libqalculate.so"
         INTERFACE_INCLUDE_DIRECTORIES "${QALCULATE_INSTALL_DIR}/include")
-
 
 ###############################################################################
 # SWIG WRAPPER
