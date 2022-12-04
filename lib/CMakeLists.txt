@@ -47,8 +47,8 @@ set_target_properties(libgmp PROPERTIES
 
 
 ExternalProject_Add(mpfr
-        URL https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.xz
-        URL_HASH MD5=bdd3d5efba9c17da8d83a35ec552baef
+        URL https://www.mpfr.org/mpfr-current/mpfr-4.1.1.tar.xz
+        URL_HASH MD5=d182b62e811f744d149b14540d8e922b
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --with-gmp=${GMP_INSTALL_DIR}
         BUILD_COMMAND make
         INSTALL_COMMAND make install
@@ -75,8 +75,8 @@ set_target_properties(libmpfr PROPERTIES
 
 
 ExternalProject_Add(xz
-        URL https://fossies.org/linux/misc/xz-5.2.5.tar.xz
-        URL_HASH MD5=aa1621ec7013a19abab52a8aff04fe5b
+        URL https://tukaani.org/xz/xz-5.2.9.tar.xz
+        URL_HASH MD5=115d93141a38801983572f816c6dd68a
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE}
         BUILD_COMMAND make
         INSTALL_COMMAND make install
@@ -99,8 +99,8 @@ set_target_properties(liblzma PROPERTIES
 
 
 ExternalProject_Add(iconv
-        URL https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.16.tar.gz
-        URL_HASH MD5=7d2a800b952942bb2880efb00cfd524c
+        URL https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.17.tar.gz
+        URL_HASH MD5=d718cd5a59438be666d1575855be72c3
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE}
         BUILD_COMMAND make
         INSTALL_COMMAND make install
@@ -156,8 +156,8 @@ set(QALCULATE_LIBXML_CFLAGS "-I${XML2_INSTALL_DIR}/include/libxml2")
 set(QALCULATE_LIBXML_LIBS "-L${XML2_INSTALL_DIR}/lib -lxml2")
 
 ExternalProject_Add(qalculate
-        URL https://github.com/Qalculate/libqalculate/releases/download/v3.22.0/libqalculate-3.22.0.tar.gz
-        URL_HASH MD5=447a0cd929b5bf855fb9463d56143b00
+        URL https://github.com/Qalculate/libqalculate/releases/download/v4.4.0/libqalculate-4.4.0.tar.gz
+        URL_HASH MD5=d30ad11c8920c2ec929745d42bd2854e
         PATCH_COMMAND patch <SOURCE_DIR>/libqalculate/util.cc < ${CMAKE_CURRENT_LIST_DIR}/src/main/cpp/liqalculate_util.patch
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --without-icu --without-libcurl --without-libintl-prefix --enable-compiled-definitions CPPFLAGS=${QALCULATE_CPPFLAGS} LDFLAGS=${QALCULATE_LDFLAGS} LIBXML_CFLAGS=${QALCULATE_LIBXML_CFLAGS} LIBXML_LIBS=${QALCULATE_LIBXML_LIBS}
         BUILD_COMMAND make
