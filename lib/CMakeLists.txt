@@ -47,7 +47,7 @@ set_target_properties(libgmp PROPERTIES
 
 
 ExternalProject_Add(mpfr
-        URL https://www.mpfr.org/mpfr-current/mpfr-4.1.1.tar.xz
+        URL https://ftp.gnu.org/gnu/mpfr/mpfr-4.1.1.tar.xz
         URL_HASH MD5=d182b62e811f744d149b14540d8e922b
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --with-gmp=${GMP_INSTALL_DIR}
         BUILD_COMMAND make
@@ -156,8 +156,8 @@ set(QALCULATE_LIBXML_CFLAGS "-I${XML2_INSTALL_DIR}/include/libxml2")
 set(QALCULATE_LIBXML_LIBS "-L${XML2_INSTALL_DIR}/lib -lxml2")
 
 ExternalProject_Add(qalculate
-        URL https://github.com/Qalculate/libqalculate/releases/download/v4.4.0/libqalculate-4.4.0.tar.gz
-        URL_HASH MD5=d30ad11c8920c2ec929745d42bd2854e
+        URL https://github.com/Qalculate/libqalculate/releases/download/v4.8.1/libqalculate-4.8.1.tar.gz
+        URL_HASH MD5=163D341990A5D52222E8E4F5F65E2D5D
         PATCH_COMMAND patch <SOURCE_DIR>/libqalculate/util.cc < ${CMAKE_CURRENT_LIST_DIR}/src/main/cpp/liqalculate_util.patch
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --without-icu --without-libcurl --without-libintl-prefix --enable-compiled-definitions CPPFLAGS=${QALCULATE_CPPFLAGS} LDFLAGS=${QALCULATE_LDFLAGS} LIBXML_CFLAGS=${QALCULATE_LIBXML_CFLAGS} LIBXML_LIBS=${QALCULATE_LIBXML_LIBS}
         BUILD_COMMAND make
