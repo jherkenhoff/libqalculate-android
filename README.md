@@ -23,8 +23,10 @@ The following instructions were tested under Ubuntu 22.04 LTS in a VirtualBox v7
 
 <details>
     <summary>In case of SWIG Syntax Error</summary>
-* Normally the following issue is fixed, but it may creep back up in the future: When building, if you get a `SWIG error: Syntax Error in input(1)` in `includes.h`, this is because there are some lines of code using some syntax that are not accepted in the newest C99 standards, so they need to be modified. The error (and link) given in the Build console in Android Studio will point directly to the problematic functions (because once one is fixed, it will jump to the next one). The issue was fixed by updating to the latest `libqalculate` from v4.4.0 to v4.8.1, which likely implemented syntax fixes.
-    * Don't bother modifying `includes.h` with `#ifndef SWIG .... #endif` blocks as advised [here](https://stackoverflow.com/a/60166645/1121352) because `includes.h` is automatically generated from `libqalculate`, so instead try to fix the root cause by patching or updating to the latest `libqalculate`. The problematic functions were: `EvaluationOptions, SortOptions, PrintOptions, InternalPrintStruct, ParseOptions`
+
+Normally the following issue is fixed, but it may creep back up in the future: When building, if you get a `SWIG error: Syntax Error in input(1)` in `includes.h`, this is because there are some lines of code using some syntax that are not accepted in the newest C99 standards, so they need to be modified. The error (and link) given in the Build console in Android Studio will point directly to the problematic functions (because once one is fixed, it will jump to the next one). The issue was fixed by updating to the latest `libqalculate` from v4.4.0 to v4.8.1, which likely implemented syntax fixes.
+
+Note: Don't bother modifying `includes.h` with `#ifndef SWIG .... #endif` blocks as advised [here](https://stackoverflow.com/a/60166645/1121352) because `includes.h` is automatically generated from `libqalculate`, so instead try to fix the root cause by patching or updating to the latest `libqalculate`. The problematic functions were: `EvaluationOptions, SortOptions, PrintOptions, InternalPrintStruct, ParseOptions`
 </details>
 
 At this point, `libqalculate-android` should build just fine into an `.aar` library file that can be linked into any Android Kotlin project.
