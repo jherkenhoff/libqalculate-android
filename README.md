@@ -1,6 +1,12 @@
 # libqalculate-android
 
-Port of libqalculate to Android
+Port of [liqalculate](https://github.com/Qalculate/libqalculate) to Android.
+
+## Importing
+
+The library can be found in [Maven Central](https://central.sonatype.com/artifact/com.jherkenhoff/libqalculate).
+You can use library in your android project by declaring it as a dependency in your `build.gradle` file:
+```implementation 'com.jherkenhoff:libqalculate:4.8.1-1'```
 
 ## Description
 This is a port of libqalculate using some monkeypatching and SWIG to build it on Android.
