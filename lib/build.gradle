@@ -1,7 +1,10 @@
 plugins {
     id 'com.android.library'
-    id 'kotlin-android'
+    id 'maven-publish'
+    id 'signing'
 }
+
+group = 'com.jherkenhoff'
 
 android {
     compileSdk 33
@@ -11,9 +14,6 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-        ndk {
-            abiFilters "arm64-v8a"
-        }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
@@ -30,12 +30,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
     }
     externalNativeBuild {
         cmake {
@@ -48,4 +48,48 @@ android {
     }
     ndkVersion '23.1.7779620'
     buildToolsVersion '33.0.1'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                artifactId rootProject.name
+                version = rootProject.version
+
+                pom {
+                    name = rootProject.name
+                    description = 'Port and precompiled binaries of the qalculate c library for android'
+                    url = 'https://github.com/jherkenhoff/libqalculate-android'
+                    packaging = 'aar'
+                    inceptionYear = '2023'
+                    licenses {
+                        license {
+                            name = 'GPL-2.0'
+                            url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                            distribution = 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = "jherkenhoff"
+                            name = "Jost Herkenhoff"
+                            email = "jost.herkenhoff@mailbox.org"
+                        }
+                    }
+                    scm {
+                        url = 'https://github.com/jherkenhoff/libqalculate-android'
+                        connection = 'https://github.com/jherkenhoff/libqalculate-android.git'
+                    }
+                }
+            }
+        }
+    }
+
+    signing {
+        useGpgCmd()
+        sign publishing.publications.release
+    }
 }

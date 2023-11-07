@@ -188,7 +188,7 @@ set_target_properties(libqalculate PROPERTIES
 ###############################################################################
 # SWIG WRAPPER
 ###############################################################################
-set(JAVA_GEN_PACKAGE "com.mrkenhoff.libqalculate")
+set(JAVA_GEN_PACKAGE "com.jherkenhoff.libqalculate")
 string(REPLACE "." "/" JAVA_GEN_SUBDIR ${JAVA_GEN_PACKAGE})
 list(APPEND CMAKE_SWIG_FLAGS -package ${JAVA_GEN_PACKAGE} -I${QALCULATE_INSTALL_DIR}/include -I${GMP_INSTALL_DIR}/include -I${MPFR_INSTALL_DIR}/include -I${ICONV_INSTALL_DIR}/include)
 
@@ -196,11 +196,11 @@ set(CMAKE_SWIG_OUTDIR ${PROJECT_SOURCE_DIR}/src/main/java/${JAVA_GEN_SUBDIR})
 set(SWIG_OUTFILE_DIR ${CMAKE_CURRENT_BINARY_DIR})
 set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/src/main/cpp/libqalculate.i PROPERTY CPLUSPLUS ON)
 
-swig_add_library(libqalculate_swig
+swig_add_library(qalculate_swig
         TYPE SHARED
         LANGUAGE java
         SOURCES ${CMAKE_CURRENT_LIST_DIR}/src/main/cpp/libqalculate.i
         )
 
-swig_link_libraries(libqalculate_swig libqalculate libgmp libmpfr libiconv libxml2 liblzma)
-add_dependencies(libqalculate_swig libqalculate)
+swig_link_libraries(qalculate_swig libqalculate libgmp libmpfr libiconv libxml2 liblzma)
+add_dependencies(qalculate_swig libqalculate)
