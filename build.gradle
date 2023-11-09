@@ -9,7 +9,7 @@ task clean(type: Delete) {
 }
 
 group = 'com.jherkenhoff'
-version = '4.8.1-1'
+version = '4.8.1-2'
 
 nexusPublishing {
     repositories {
