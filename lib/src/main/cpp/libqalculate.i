@@ -1,4 +1,5 @@
 %module libqalculate
+
 %{
 #include "libqalculate/qalculate.h"
 %}
@@ -11,6 +12,14 @@ namespace std {
     %template(IntVector) vector<int>;
     %template(StringVector) vector<std::string>;
     %template(MathStructureVector) vector<MathStructure>;
+    %template(VariableVector) vector<Variable*>;
+    %template(UnitVector) vector<Unit*>;
+    %template(MathFunctionVector) vector<MathFunction*>;
+    %template(PrefixVector) vector<Prefix*>;
+    %template(DecimalPrefixVector) vector<DecimalPrefix*>;
+    %template(BinaryPrefixVector) vector<BinaryPrefix*>;
+    %template(ExpressionItemVector) vector<ExpressionItem*>;
+    %template(ExpressionNameVector) vector<ExpressionName>;
 };
 
 // va_list is not supported by SWIG (http://swig.org/Doc1.3/Varargs.html#Varargs_nn8)

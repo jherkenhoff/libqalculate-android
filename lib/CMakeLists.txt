@@ -23,8 +23,8 @@ execute_process(COMMAND chmod +x ${CXX_COMPILER_WRAPPER})
 set(CROSS_COMPILE_PREFIX CC=${C_COMPILER_WRAPPER} LD=${CMAKE_LD} CXX=${CXX_COMPILER_WRAPPER} AR=${CMAKE_AR} AS=${C_COMPILER_WRAPPER} RANLIB=${CMAKE_RANLIB} STRIP=${CMAKE_STRIP})
 
 ExternalProject_Add(gmp
-        URL https://gmplib.org/download/gmp/gmp-6.2.1.tar.lz
-        URL_HASH MD5=03a31d8cbaf29d136252f8f38875ed82
+        URL https://gmplib.org/download/gmp/gmp-6.3.0.tar.gz
+        URL_HASH MD5=3390cf8cc96bbec5a9123f2fb22480db
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE}
         BUILD_COMMAND make
         INSTALL_COMMAND make install
@@ -47,8 +47,8 @@ set_target_properties(libgmp PROPERTIES
 
 
 ExternalProject_Add(mpfr
-        URL https://ftp.gnu.org/gnu/mpfr/mpfr-4.1.1.tar.xz
-        URL_HASH MD5=d182b62e811f744d149b14540d8e922b
+        URL https://ftp.gnu.org/gnu/mpfr/mpfr-4.2.1.tar.xz
+        URL_HASH MD5=523c50c6318dde6f9dc523bc0244690a
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --with-gmp=${GMP_INSTALL_DIR}
         BUILD_COMMAND make
         INSTALL_COMMAND make install
@@ -75,8 +75,8 @@ set_target_properties(libmpfr PROPERTIES
 
 
 ExternalProject_Add(xz
-        URL https://tukaani.org/xz/xz-5.2.9.tar.xz
-        URL_HASH MD5=115d93141a38801983572f816c6dd68a
+        URL https://github.com/tukaani-project/xz/releases/download/v5.6.2/xz-5.6.2.tar.gz
+        URL_HASH MD5=8719165906f5a1a9f9ab755d095b3711
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE}
         BUILD_COMMAND make
         INSTALL_COMMAND make install
@@ -126,8 +126,8 @@ set_target_properties(libiconv PROPERTIES
 
 
 ExternalProject_Add(xml2
-        URL ftp://xmlsoft.org/libxml2/libxml2-2.9.12.tar.gz
-        URL_HASH MD5=f433a39be087a9f0b197eb2307ad9f75
+        URL https://download.gnome.org/sources/libxml2/2.9/libxml2-2.9.14.tar.xz
+        URL_HASH MD5=b7b3029ac6beb32a7925225515f83ca3
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --without-python --with-lzma=${XZ_INSTALL_DIR}
         BUILD_COMMAND make
         INSTALL_COMMAND make install
@@ -156,8 +156,8 @@ set(QALCULATE_LIBXML_CFLAGS "-I${XML2_INSTALL_DIR}/include/libxml2")
 set(QALCULATE_LIBXML_LIBS "-L${XML2_INSTALL_DIR}/lib -lxml2")
 
 ExternalProject_Add(qalculate
-        URL https://github.com/Qalculate/libqalculate/releases/download/v4.8.1/libqalculate-4.8.1.tar.gz
-        URL_HASH MD5=163D341990A5D52222E8E4F5F65E2D5D
+        URL https://github.com/Qalculate/libqalculate/releases/download/v5.2.0/libqalculate-5.2.0.tar.gz
+        URL_HASH MD5=d378112794a24d6af1092e0c25f0ff97
         PATCH_COMMAND patch <SOURCE_DIR>/libqalculate/util.cc < ${CMAKE_CURRENT_LIST_DIR}/src/main/cpp/liqalculate_util.patch
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --without-icu --without-libcurl --without-libintl-prefix --enable-compiled-definitions CPPFLAGS=${QALCULATE_CPPFLAGS} LDFLAGS=${QALCULATE_LDFLAGS} LIBXML_CFLAGS=${QALCULATE_LIBXML_CFLAGS} LIBXML_LIBS=${QALCULATE_LIBXML_LIBS}
         BUILD_COMMAND make
