@@ -7,11 +7,11 @@ plugins {
 group = 'com.jherkenhoff'
 
 android {
-    compileSdk 33
+    namespace 'com.jherkenhoff.libqalculate'
+    compileSdk 34
 
     defaultConfig {
-        minSdk 21
-        targetSdk 33
+        minSdk 24
         versionCode 1
         versionName "1.0"
 
@@ -40,14 +40,23 @@ android {
     externalNativeBuild {
         cmake {
             path file('CMakeLists.txt')
-            version '3.10.2'
+            version '3.22.1'
         }
     }
     buildFeatures {
         viewBinding true
     }
     ndkVersion '23.1.7779620'
-    buildToolsVersion '33.0.1'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
 }
 
 afterEvaluate {
@@ -92,4 +101,13 @@ afterEvaluate {
         useGpgCmd()
         sign publishing.publications.release
     }
+}
+
+project.afterEvaluate {
+    // From: https://github.com/sureshjoshi/android-ndk-swig-example/blob/master/AS3/app/build.gradle
+
+    // Not sure how much of a hack this is - but it allows CMake/SWIG to run before Android Studio
+    // complains about missing generated files
+    // TODO: Probably need a release hook too?
+    javaPreCompileDebug.dependsOn externalNativeBuildDebug
 }
