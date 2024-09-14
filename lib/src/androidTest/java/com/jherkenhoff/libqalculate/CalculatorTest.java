@@ -2,6 +2,8 @@ package com.jherkenhoff.libqalculate;
 
 import static org.junit.Assert.assertEquals;
 
+import android.util.Log;
+
 import org.junit.Before;
 import org.junit.Test;
 

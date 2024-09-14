@@ -205,7 +205,6 @@ swig_add_library(qalculate_swig
 swig_link_libraries(qalculate_swig libqalculate libgmp libmpfr libiconv libxml2 liblzma)
 add_dependencies(qalculate_swig libqalculate)
 
-
 file(GLOB JAVA_FILES ${PROJECT_SOURCE_DIR}/src/main/cpp/wrapper/*.java)
 if (JAVA_FILES)
         file(COPY ${JAVA_FILES} DESTINATION ${PROJECT_SOURCE_DIR}/src/main/java/${JAVA_GEN_SUBDIR})

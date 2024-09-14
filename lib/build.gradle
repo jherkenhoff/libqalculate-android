@@ -4,6 +4,8 @@ plugins {
     id 'signing'
 }
 
+group = 'com.jherkenhoff'
+
 android {
     namespace 'com.jherkenhoff.libqalculate'
     compileSdk 34
@@ -52,7 +54,6 @@ android {
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.6.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
 }
@@ -62,6 +63,9 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
+
+
+                groupId = 'com.jherkenhoff'
 
                 artifactId rootProject.name
                 version = rootProject.version
