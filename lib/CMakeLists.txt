@@ -47,8 +47,8 @@ set_target_properties(libgmp PROPERTIES
 
 
 ExternalProject_Add(mpfr
-        URL https://ftp.gnu.org/gnu/mpfr/mpfr-4.2.1.tar.xz
-        URL_HASH MD5=523c50c6318dde6f9dc523bc0244690a
+        URL https://ftp.gnu.org/gnu/mpfr/mpfr-4.2.2.tar.xz
+        URL_HASH MD5=7c32c39b8b6e3ae85f25156228156061
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --with-gmp=${GMP_INSTALL_DIR}
         BUILD_COMMAND make
         INSTALL_COMMAND make install
@@ -71,36 +71,9 @@ set_target_properties(libmpfr PROPERTIES
 
 
 
-
-
-
-ExternalProject_Add(xz
-        URL https://github.com/tukaani-project/xz/releases/download/v5.6.2/xz-5.6.2.tar.gz
-        URL_HASH MD5=8719165906f5a1a9f9ab755d095b3711
-        CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE}
-        BUILD_COMMAND make
-        INSTALL_COMMAND make install
-        STEP_TARGETS install
-        )
-ExternalProject_Get_property(xz INSTALL_DIR)
-set(XZ_INSTALL_DIR ${INSTALL_DIR})
-
-add_library(liblzma SHARED IMPORTED)
-add_dependencies(liblzma xz-install)
-IF(NOT EXISTS "${XZ_INSTALL_DIR}/lib/liblzma.so")
-file(WRITE ${XZ_INSTALL_DIR}/lib/liblzma.so "")
-ENDIF()
-file(MAKE_DIRECTORY ${XZ_INSTALL_DIR}/include)
-set_target_properties(liblzma PROPERTIES
-        IMPORTED_LOCATION "${XZ_INSTALL_DIR}/lib/liblzma.so"
-        INTERFACE_INCLUDE_DIRECTORIES "${XZ_INSTALL_DIR}/include")
-
-
-
-
 ExternalProject_Add(iconv
-        URL https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.17.tar.gz
-        URL_HASH MD5=d718cd5a59438be666d1575855be72c3
+        URL https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.18.tar.gz
+        URL_HASH MD5=1af69958b42981d3c3029ffb4c7ebaed
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE}
         BUILD_COMMAND make
         INSTALL_COMMAND make install
@@ -126,12 +99,13 @@ set_target_properties(libiconv PROPERTIES
 
 
 ExternalProject_Add(xml2
-        URL https://download.gnome.org/sources/libxml2/2.9/libxml2-2.9.14.tar.xz
-        URL_HASH MD5=b7b3029ac6beb32a7925225515f83ca3
-        CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --without-python --with-lzma=${XZ_INSTALL_DIR}
+        URL https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
+        URL_HASH MD5=fcf38f534bb8996984dba978ee3e27f4
+        CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --without-python --with-iconv=${ICONV_INSTALL_DIR}
         BUILD_COMMAND make
         INSTALL_COMMAND make install
         STEP_TARGETS install
+        DEPENDS libiconv
         )
 ExternalProject_Get_property(xml2 INSTALL_DIR)
 set(XML2_INSTALL_DIR ${INSTALL_DIR})
@@ -156,8 +130,8 @@ set(QALCULATE_LIBXML_CFLAGS "-I${XML2_INSTALL_DIR}/include/libxml2")
 set(QALCULATE_LIBXML_LIBS "-L${XML2_INSTALL_DIR}/lib -lxml2")
 
 ExternalProject_Add(qalculate
-        URL https://github.com/Qalculate/libqalculate/releases/download/v5.2.0/libqalculate-5.2.0.tar.gz
-        URL_HASH MD5=d378112794a24d6af1092e0c25f0ff97
+        URL https://github.com/Qalculate/libqalculate/releases/download/v5.8.2/libqalculate-5.8.2.tar.gz
+        URL_HASH MD5=81cdc67904f3de4d9ef68e9cdcd46919
         PATCH_COMMAND patch <SOURCE_DIR>/libqalculate/util.cc < ${CMAKE_CURRENT_LIST_DIR}/src/main/cpp/liqalculate_util.patch
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --without-icu --without-libcurl --without-libintl-prefix --enable-compiled-definitions CPPFLAGS=${QALCULATE_CPPFLAGS} LDFLAGS=${QALCULATE_LDFLAGS} LIBXML_CFLAGS=${QALCULATE_LIBXML_CFLAGS} LIBXML_LIBS=${QALCULATE_LIBXML_LIBS}
         BUILD_COMMAND make
