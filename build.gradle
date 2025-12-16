@@ -5,7 +5,7 @@ buildscript {
 }
 plugins {
     id 'com.android.library' version '8.13.2' apply false
-    id "io.github.gradle-nexus.publish-plugin" version "2.0.0"
+    id 'org.jreleaser' version '1.21.0'
 }
 
 tasks.register('clean', Delete) {
@@ -15,13 +15,28 @@ tasks.register('clean', Delete) {
 group = 'com.jherkenhoff'
 version = '5.8.2-1'
 
-nexusPublishing {
-    repositories {
-        sonatype {
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-            username = sonatypeUsername
-            password = sonatypePassword
+jreleaser {
+    signing {
+        active = 'ALWAYS'
+        armored = true
+        mode = 'COMMAND'
+    }
+    release {
+        github {
+            token = ""
+        }
+    }
+    deploy {
+        maven {
+            mavenCentral {
+                sonatype {
+                    active = 'ALWAYS'
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+                    stagingRepository('build/staging-deploy')
+                    username = "www"
+                    password = "www"
+                }
+            }
         }
     }
 }
