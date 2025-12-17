@@ -1,27 +1,4 @@
-buildscript {
-    ext {
-        agp_version = '8.13.2'
-    }
-}
 plugins {
     id 'com.android.library' version '8.13.2' apply false
-    id "io.github.gradle-nexus.publish-plugin" version "2.0.0"
 }
 
-tasks.register('clean', Delete) {
-    delete rootProject.buildDir
-}
-
-group = 'com.jherkenhoff'
-version = '5.8.2-1'
-
-nexusPublishing {
-    repositories {
-        sonatype {
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-            username = sonatypeUsername
-            password = sonatypePassword
-        }
-    }
-}

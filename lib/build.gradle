@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'maven-publish'
-    id 'signing'
+    id "com.vanniktech.maven.publish" version "0.35.0"
 }
 
 group = 'com.jherkenhoff'
@@ -23,28 +23,20 @@ android {
             }
         }
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
     externalNativeBuild {
         cmake {
             path file('CMakeLists.txt')
-            version '3.22.1'
+            version = '3.22.1'
         }
     }
     buildFeatures {
-        viewBinding true
+        viewBinding = true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -57,58 +49,34 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
 
+    coordinates("com.jherkenhoff", "libqalculate", "5.8.2-1")
 
-                groupId = 'com.jherkenhoff'
-
-                artifactId rootProject.name
-                version = rootProject.version
-
-                pom {
-                    name = rootProject.name
-                    description = 'Port and precompiled binaries of the qalculate c library for android'
-                    url = 'https://github.com/jherkenhoff/libqalculate-android'
-                    packaging = 'aar'
-                    inceptionYear = '2023'
-                    licenses {
-                        license {
-                            name = 'GPL-2.0'
-                            url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
-                            distribution = 'repo'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id = "jherkenhoff"
-                            name = "Jost Herkenhoff"
-                            email = "jost.herkenhoff@mailbox.org"
-                        }
-                    }
-                    scm {
-                        url = 'https://github.com/jherkenhoff/libqalculate-android'
-                        connection = 'https://github.com/jherkenhoff/libqalculate-android.git'
-                    }
-                }
+    pom {
+        name = rootProject.name
+        description = 'Port and precompiled binaries of the qalculate c library for android'
+        url = 'https://github.com/jherkenhoff/libqalculate-android'
+        inceptionYear = '2023'
+        licenses {
+            license {
+                name = 'GPL-2.0'
+                url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                distribution = 'repo'
             }
         }
+        developers {
+            developer {
+                id = "jherkenhoff"
+                name = "Jost Herkenhoff"
+            }
+        }
+        scm {
+            url = 'https://github.com/jherkenhoff/libqalculate-android'
+            connection = "scm:git:git://github.com/jherkenhoff/libqalculate-android.git"
+            developerConnection = "scm:git:ssh://git@github.com/jherkenhoff/libqalculate-android.git"
+        }
     }
-
-    signing {
-        useGpgCmd()
-        sign publishing.publications.release
-    }
-}
-
-project.afterEvaluate {
-    // From: https://github.com/sureshjoshi/android-ndk-swig-example/blob/master/AS3/app/build.gradle
-
-    // Not sure how much of a hack this is - but it allows CMake/SWIG to run before Android Studio
-    // complains about missing generated files
-    // TODO: Probably need a release hook too?
-    javaPreCompileDebug.dependsOn externalNativeBuildDebug
 }
