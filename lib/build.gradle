@@ -9,11 +9,12 @@ group = 'com.jherkenhoff'
 android {
     namespace = 'com.jherkenhoff.libqalculate'
     compileSdk = 36
+    ndkVersion = '29.0.14206865'
 
     defaultConfig {
-        minSdk 24
-        versionCode 3
-        versionName "5.8.2-1"
+        minSdk = 24
+        versionCode = versionCode
+        versionName = versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
@@ -53,7 +54,7 @@ mavenPublishing {
     publishToMavenCentral()
     signAllPublications()
 
-    coordinates("com.jherkenhoff", "libqalculate", "5.8.2-1")
+    coordinates("com.jherkenhoff", "libqalculate", versionName)
 
     pom {
         name = rootProject.name
