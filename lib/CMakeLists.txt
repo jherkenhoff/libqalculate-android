@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10.2)
 project("libqalculate")
 
 include(ExternalProject)
+
+# Setup SWIG
 find_package(SWIG REQUIRED COMPONENTS java)
 if(SWIG_FOUND)
     message("SWIG found: ${SWIG_EXECUTABLE}")
