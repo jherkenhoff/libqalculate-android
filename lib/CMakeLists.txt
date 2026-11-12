@@ -9,6 +9,8 @@ ProcessorCount(N)
 find_package(SWIG REQUIRED COMPONENTS java)
 if(SWIG_FOUND)
     message("SWIG found: ${SWIG_EXECUTABLE}")
+    message("SWIG version: ${SWIG_VERSION}")
+    message("SWIG lib: ${SWIG_DIR}")
 endif()
 include(UseSWIG)
 
