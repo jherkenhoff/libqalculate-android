@@ -78,8 +78,8 @@ set_target_properties(libmpfr PROPERTIES
 
 
 ExternalProject_Add(iconv
-        URL https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.18.tar.gz
-        URL_HASH MD5=1af69958b42981d3c3029ffb4c7ebaed
+        URL https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.19.1.tar.gz
+        URL_HASH MD5=7f84dfb6c9d63b1604c989ad0e8b51a7
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE}
         BUILD_COMMAND make -j${N}
         INSTALL_COMMAND make install
@@ -105,8 +105,8 @@ set_target_properties(libiconv PROPERTIES
 
 
 ExternalProject_Add(xml2
-        URL https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
-        URL_HASH MD5=fcf38f534bb8996984dba978ee3e27f4
+        URL https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.4.tar.xz
+        URL_HASH MD5=9f5edcbe69198835cb45b4fb2a6d761b
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --without-python --with-iconv=${ICONV_INSTALL_DIR}
         BUILD_COMMAND make -j${N}
         INSTALL_COMMAND make install
@@ -136,8 +136,8 @@ set(QALCULATE_LIBXML_CFLAGS "-I${XML2_INSTALL_DIR}/include/libxml2")
 set(QALCULATE_LIBXML_LIBS "-L${XML2_INSTALL_DIR}/lib -lxml2")
 
 ExternalProject_Add(qalculate
-        URL https://github.com/Qalculate/libqalculate/releases/download/v5.12.0/libqalculate-5.12.0.tar.gz
-        URL_HASH MD5=46f93f638b6ce747f17dba955f95c9cf
+        URL https://github.com/Qalculate/libqalculate/releases/download/v5.13.1/libqalculate-5.13.1.tar.gz
+        URL_HASH MD5=6281f37e232de9367db370bd264bdc64
         PATCH_COMMAND patch <SOURCE_DIR>/libqalculate/util.cc < ${CMAKE_CURRENT_LIST_DIR}/src/main/cpp/liqalculate_util.patch
         CONFIGURE_COMMAND ${CROSS_COMPILE_PREFIX} <SOURCE_DIR>/autogen.sh --prefix=<INSTALL_DIR> --host ${ANDROID_LLVM_TRIPLE} --without-icu --without-libcurl --without-libintl-prefix --enable-compiled-definitions CPPFLAGS=${QALCULATE_CPPFLAGS} LDFLAGS=${QALCULATE_LDFLAGS} LIBXML_CFLAGS=${QALCULATE_LIBXML_CFLAGS} LIBXML_LIBS=${QALCULATE_LIBXML_LIBS}
         BUILD_COMMAND make -j${N}
